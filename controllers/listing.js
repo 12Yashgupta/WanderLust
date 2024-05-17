@@ -1,5 +1,5 @@
 let Listing=require("../models/listing.js");
-const mbxGeocoding = require('@mapbox/mapbox-sdk/services/tilesets');
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 //const mbxClient = require('@mapbox/mapbox-sdk'); 
 const mapToken=process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
@@ -30,9 +30,12 @@ module.exports.createNewListing=async (req,res,next)=>{
    
    let response= await geocodingClient.forwardGeocode({
         query: 'New Delhi, India',
-        proximity: [-95.4431142, 33.6875431]
+      //  proximity: [-95.4431142, 33.6875431]
+         limit:1
       })
-       console.log(response.body.features);
+      .send()
+    //    console.log(response.body.features[0].geometry);
+     //  res.send("Added");
     if(!req.body.listing){
         throw new expressError(400,"Enter the valid data!");
     }
@@ -41,8 +44,11 @@ module.exports.createNewListing=async (req,res,next)=>{
      let listing = await new Listing(req.body.listing);
      listing.owner=req.user._id;
      listing.image={url,filename};
-     console.log(req.user);
-     await listing.save()
+     listing.geometry=response.body.features[0].geometry;
+    // console.log(req.user);
+      
+   let new_listing=  await listing.save();
+   console.log(new_listing);
      req.flash("success","New Listings is created");
      res.redirect("/listings");
   
