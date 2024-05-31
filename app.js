@@ -2,14 +2,14 @@ if(process.env.Node_ENV!="production"){
 require('dotenv').config()
 console.log(process.env.SECRET)
 }
-const express=require("express");
-const app=express();
-const mongoose=require("mongoose");
-const port=8080;
-const MONGO_LINK="mongodb://127.0.0.1:27017/WanderLust";
+const express=require("express");//done
+const app=express();//done
+const mongoose=require("mongoose");//done
+const port=8080;//done
+const MONGO_LINK="mongodb://127.0.0.1:27017/WanderLust";//done
 const Listing=require("./models/listing.js")
-const path=require("path");
-let ejsMate=require("ejs-mate");
+const path=require("path");//done
+let ejsMate=require("ejs-mate");//done
 var methodOverride = require('method-override')
 app.use(methodOverride('_method'))
 app.engine("ejs",ejsMate);
@@ -72,6 +72,7 @@ app.get("/demouser",async (req,res)=>{
 app.get("/",(req,res)=>{
     res.send("You are on root path");
 })
+
 app.use((req,res,next)=>{
     res.locals.message=req.flash("success");
     res.locals.error=req.flash("error");
