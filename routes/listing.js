@@ -44,10 +44,10 @@ router.route("/:id")
     asyncWrap(listingController.updateForm))//Update route
 .delete(logedIn,checkListAuthorization,asyncWrap(listingController.deleteForm));
 
-router.get("/catagory/:option",async(req,res)=>{
+router.get("/category/:option",async(req,res)=>{
     let{option}=req.params;
-   let allListings=await Listing.find({catagory:`${option}`});
- //  console.log(option,allListings);
+   let allListings=await Listing.find({category:`${option}`});
+//    console.log(option,allListings);
  res.render("listings/index.ejs",{allListings});
  // res.send("Great");
  });

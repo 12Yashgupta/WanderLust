@@ -5,7 +5,13 @@ const userSchema=new Schema({
     email:{
         type:String,
         required:true
-    }
+    },
+    booking:
+    [
+        {start:Date},
+        {end:Date},
+        {guest:Number}
+    ]
 });
 userSchema.plugin(passportLocalMongoose);
 module.exports=mongoose.model("User",userSchema);

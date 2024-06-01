@@ -4,6 +4,7 @@
        const mapToken="<%=process.env.MAP_TOKEN%>"
        const coordinates=<%- JSON.stringify(list.geometry.coordinates)%>;
    </script>
+
     <div class="row">
         <div class="col-6 offset-3">
             <h3><%=list.title%></h3>
@@ -25,14 +26,23 @@
                 </div>
             </div>
     </div>
- 
+ <% if(currUser && list.owner._id.equals(currUser._id)){%>
     <div class="btns mb-3">
         <a href="/listings/<%=list._id%>/edit" class="btn btn-dark col-1 offset-3 edit-btn">Edit</a>
         <form action="/listings/<%=list._id%>?_method=DELETE" method="post">
             <button  class="btn btn-dark offset-5 ">Delete</button>
         </form>
-
     </div>
+ <%}%>
+ <%if(currUser){%>
+ <% if(!(currUser && list.owner._id.equals(currUser._id))){%>
+<div class="btns mb-3 pd offset-3">
+    <div class="btn btn-dark filter-btn fw-bold border p-2  m-2 filter-option" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+       Book
+    </div>
+</div>
+<%}%>
+ <% } %>
   <% if(currUser){ %>
     <div class="cols-8 offset-3">
         <h4>Leave a review:-</h4>
@@ -92,5 +102,49 @@
         <h3>Where you will be</h3>
         <div id="map"></div>
     </div>
+       <!-- Modal -->
+<div class="modal modal-lg fade" id="staticBackdrop" data-bs-backdrop="static"
+data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered">
+    <form id="selectionForm"  action="/listings/<%=list._id%>/booking" method="get" class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Book Your Place</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="padding: 1rem 3rem;">
+            <div class="row">
+                <div class="mb-3 col-6">
+                    <label for="start" class="form-label">Start Date</label>
+                    <input name="start" 
+                           placeholder="Enter  Start Date" 
+                           type="date"
+                           class="form-control" 
+                     required>
+                    <div class="invalid-feedback">Field required!</div>
+                   </div>
+                   <div class="mb-3 col-6">
+                    <label for="end" class="form-label">End Date</label>
+                    <input name="end" 
+                           placeholder="Enter  End Date" 
+                           type="date"
+                           class="form-control" 
+                      required>
+                    <div class="invalid-feedback">Field required!</div>
+                   </div>
+            </div>   
+              <div class="mb-3 col-3">
+                <label for="guest" class="form-label">Enter Guests</label>
+                 <input name="guest" type="range" value="5" min="1" max="16" oninput="this.nextElementSibling.value = this.value" readonly >
+                 <output>5</output>
+                <div class="invalid-feedback">Field required!</div>
+               </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-outline-primary">Apply</button>
+        </div>
+    </form>
+</div>
+</div>
      <script src="/js/map.js"></script>
 </body>

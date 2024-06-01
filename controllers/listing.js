@@ -8,9 +8,30 @@ const app=express();
 const path=require("path");
 app.use(express.json());
 app.use(express.static(path.join(__dirname,"/public")));
-module.exports.index=async (req,res)=>{
-    let allListings= await Listing.find({});
-    res.render("listings/index.ejs",{allListings});
+module.exports.index = async (req, res) => {
+    let allListings = await Listing.find();
+
+    const {  minPrice, maxPrice, category } = req.query;
+
+    let result = allListings;
+   // console.log(req.query);
+    // console.log(category);
+
+    // If category parameter is provided, filter by category
+    if (category && category.length > 0) {
+        result = result.filter(listing => category.includes(listing.category));
+      //  console.log(result);
+    }
+  
+   //If minPrice or maxPrice parameters are provided, filter by price range
+    if (minPrice || maxPrice) {
+        const min = minPrice ? parseInt(minPrice) : Number.MIN_SAFE_INTEGER;
+        const max = maxPrice ? parseInt(maxPrice) : Number.MAX_SAFE_INTEGER;
+
+        result = result.filter(listing => listing.price >= min && listing.price <= max);
+    }
+
+    res.render('listings/index.ejs', { allListings: result });
 }
 
 module.exports.renderNewForm=(req,res)=>{

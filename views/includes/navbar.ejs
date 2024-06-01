@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="navbar-nav">
-        <form class="d-flex" role="search" action="/listings/search"  method="get">
+        <form class="d-flex" role="search" action="/search"  method="get">
           <input class="form-control me-2 inp-search" type="search" placeholder="Search destination" name="title" >
           <button class="btn btn-search " type="submit">
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -35,7 +35,7 @@
       </div>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav ms-auto"> 
-          <a class="nav-link" href="/listings/new">Airbnb your listings</a>
+          <a class="nav-link" href="/listings/new">Host your listings</a>
           <%if(!currUser){%>  
           <a class="nav-link active" aria-current="page" href="/signup"><b>SignUp</b></a>
           <a class="nav-link" href="/login"><b>LogIn</b></a>

@@ -25,6 +25,7 @@ const passport=require("passport");
 const localStrategy=require("passport-local");
 const User=require("./models/user.js");
 const { allowedNodeEnvironmentFlags } = require("process");
+let {logedIn,checkListAuthorization}=require("./middleware.js");
 async function main(){
     await mongoose.connect(MONGO_LINK);
  }
@@ -83,6 +84,20 @@ app.get("/listings/search",asyncWrap(async(req,res)=>{
     }
     res.redirect(`/listings/${listing[0]._id}`);
 }));
+app.get("/listings/:id/booking",(req,res)=>{
+       console.log(req.query);
+       let{id}=req.params;
+       let{"start-date":date1,"end-date":date2,guest}=req.query;
+       let start=new Date(date1);
+       let end=new Date(date2);
+       console.log(start,end);
+     //  let time_difference = end.getTime() - start.getTime();    
+      // let days_difference = time_difference / (1000 * 60 * 60 * 24);  
+      // let no_of_guest=Number(guest);
+     //  console.log(req.user);
+       console.log("Days Difference",days_difference);
+       res.send("Sent!");
+});
 //For options
 // app.get("/listings/catagory/:option",async(req,res)=>{
 //    let{option}=req.params;
@@ -93,7 +108,6 @@ app.use((req,res,next)=>{
     res.locals.message=req.flash("success");
     res.locals.error=req.flash("error");
     res.locals.currUser=req.user;
-   
     next();
  })
 app.use("/listings",listingsRouter);
