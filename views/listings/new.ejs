@@ -36,18 +36,7 @@
  
          </div>
         <div class="row">
-         <div class="mb-3 col-4">
-            <label for="price" class="form-label">Price</label>
-            <input 
-            type="text" 
-            name="listing[price]" 
-            placeholder="Enter  price"
-            class="form-control"
-            required
-            />
-            <div class="invalid-feedback">Enter valid price!</div>
-           </div>
-          <div class="mb-3 col-8">
+          <div class="mb-3 col-7">
             <label for="country" class="form-label">Country</label>
             <input 
             type="text" 
@@ -58,18 +47,47 @@
             />
             <div class="invalid-feedback">Enter valid country!</div>
           </div>
+         <div class="mb-3 col-5">
+            <label for="price" class="form-label">Price</label>
+            <input 
+            type="text" 
+            name="listing[price]" 
+            placeholder="Enter  price"
+            class="form-control"
+            required
+            />
+            <div class="invalid-feedback">Enter valid price!</div>
+           </div>
+         
         </div>
-        <div class="mb-3">
-         <label for="location" class="form-label">Location</label>
-         <input 
-         type="text" 
-         name="listing[location]" 
-         placeholder="Enter  location"
-         class="form-control"
-         required
-         />
-         <div class="invalid-feedback">Enter valid location!</div>
+       
+       <div class="row">
+        <div class="mb-3 col-7">
+          <label for="location" class="form-label">Location</label>
+          <input 
+          type="text" 
+          name="listing[location]" 
+          placeholder="Enter  location"
+          class="form-control"
+          required
+          />
+          <div class="invalid-feedback">Enter valid location!</div>
+        </div>
+        <div class="mb-3 col-5">
+          <label for="catagory" class="form-label">Catagory</label>
+          <select name="listing[catagory]" class="form-select" aria-label="Default select example" required>
+            <option value="Rooms">Rooms</option>
+            <option value="Campings">Campings</option>
+            <option value="Farms">Farms</option>
+            <option value="Mountains">Mountains</option>
+            <option value="Pools">Pools</option>
+            <option value="Castles">Castles</option>
+            <option value="Arctic">Arctic</option>
+          </select>
+          <div class="invalid-feedback">Enter valid location!</div>
+        </div>
        </div>
+      
       
        <br>
         <button class="btn btn-dark add-btn mt-3">Add</button>

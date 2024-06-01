@@ -73,6 +73,22 @@ app.get("/",(req,res)=>{
     res.send("You are on root path");
 })
 
+//For searching listing
+app.get("/listings/search",asyncWrap(async(req,res)=>{
+    let listing = await Listing.find({title:req.query.title});
+    if(listing.length==0)
+    {
+        req.flash("error","Place not found!");
+        res.redirect("/listings");
+    }
+    res.redirect(`/listings/${listing[0]._id}`);
+}));
+//For options
+// app.get("/listings/catagory/:option",async(req,res)=>{
+//    let{option}=req.params;
+//   let allListings=await Listing.find({catagory:`${option}`});
+//    res.render("listings/index.ejs",{allListings});
+// });
 app.use((req,res,next)=>{
     res.locals.message=req.flash("success");
     res.locals.error=req.flash("error");
