@@ -18,4 +18,8 @@ router.route("/login")
    ,userController.login);
 
 router.get("/logout",userController.logout);
+router.get("/profile",(req,res)=>{
+      console.log(req.user.Booking);
+      res.render("users/profile.ejs");
+});
 module.exports=router;

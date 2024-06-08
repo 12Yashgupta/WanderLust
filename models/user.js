@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+let Booking=require("./booking.js");
 const passportLocalMongoose = require('passport-local-mongoose');
 const userSchema=new Schema({
     email:{
         type:String,
         required:true
     },
-    booking:
-    [
-        {start:Date},
-        {end:Date},
-        {guest:Number}
+    bookings:[
+        {
+          type:Schema.Types.ObjectId,
+          ref:"Booking"
+        }
     ]
 });
 userSchema.plugin(passportLocalMongoose);

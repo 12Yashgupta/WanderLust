@@ -34,7 +34,7 @@
         </form>
     </div>
  <%}%>
- <%if(currUser){%>
+ 
  <% if(!(currUser && list.owner._id.equals(currUser._id))){%>
 <div class="btns mb-3 pd offset-3">
     <div class="btn btn-dark filter-btn fw-bold border p-2  m-2 filter-option" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -42,7 +42,7 @@
     </div>
 </div>
 <%}%>
- <% } %>
+
   <% if(currUser){ %>
     <div class="cols-8 offset-3">
         <h4>Leave a review:-</h4>

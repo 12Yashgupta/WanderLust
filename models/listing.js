@@ -1,6 +1,7 @@
 const mongoose=require("mongoose");
 let Review=require("./review.js");
 let User=require("./user.js");
+let Booking=require("./booking.js")
 const schema=mongoose.Schema;
 
 const listingSchema=new schema({
@@ -50,11 +51,15 @@ const listingSchema=new schema({
         type:String,
         enum:["Trending","Rooms","Campings","Farms","Mountains","Pools","Castles","Arctic"]
       },
-      Booking:[
-        {start:Date},
-        {end:Date},
-        {guest:Number}
-    ]
+      bookings:[
+       {
+          type:schema.Types.ObjectId,
+          ref:"Booking"
+       }
+    ],
+      maxGuest:{
+        type:Number
+      }
 });
 listingSchema.post("findOneAndDelete",async(listing)=>{
     if(listing){

@@ -48,7 +48,7 @@ module.exports.renderNewForm=(req,res)=>{
             res.redirect("/listings");
         }
    //    console.log(list);
-    res.render("listings/show.ejs",{list});
+    res.render("listings/show1.ejs",{list});
 }
 
 module.exports.createNewListing=async (req,res,next)=>{
