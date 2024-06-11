@@ -5,13 +5,12 @@ let Listing=require("./listing.js");
 
 let bookingSchema=new schema({
     start:{
-        type:Date
+        type:String
     },
     end:{
-        type:Date
+        type:String
     },
-    guest:Number,
-    price:Number,
+    guest:String,
     owner:{
         type:schema.Types.ObjectId,
         ref:"User"
@@ -19,6 +18,9 @@ let bookingSchema=new schema({
     place:{
             type:schema.Types.ObjectId,
             ref:"Listing"
+    },
+    days:{
+        type:Number
     }
 });
 let Booking=mongoose.model("Booking",bookingSchema);

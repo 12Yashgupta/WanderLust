@@ -335,6 +335,14 @@
     margin-bottom: 2rem;
     margin: auto;
 }
+.customer-btn{
+   /* width: 26rem;
+    margin-top: 3rem; */
+    width: 100%;
+    margin-top: 2rem;
+    height: 4rem;
+    box-shadow: #3d83a4 0px 5px 15px;
+}
 </style>
 <body>
    <script>
@@ -362,7 +370,7 @@
                         <h5><%=list.description%></h5>
                     </div>
                      <div class="description-guest">
-                        <h5><b>Max number of guests</b>: 16</h5>
+                        <h5><b>Max number of guests</b>: <%=list.maxGuest%> </h5>
                      </div>
                      <% if(currUser && list.owner._id.equals(currUser._id)){%>
                      <div class="del-edit-description">
@@ -370,16 +378,20 @@
                             <button class="button-81" style="width: 100%;">Delete</button>
                         </form>
                         <a href="/listings/<%=list._id%>/edit" class="button-81">Edit</a>
+                        <!-- <a href="/listings/<%=list._id%>/booking" class="button-81 customer-btn">See Customers Bookings</a> -->
                      </div>
+                     <form action="/listings/<%=list._id%>/booking" style=" width: 40%;" method="post">
+                        <button class="button-81 customer-btn" style="width: 100%;">See Customers</button>
+                    </form>
                      <%}%>
                 </div>
-              <%if(currUser){  %>  
-                <% if(!(  list.owner._id.equals(currUser._id))){%>
+             
+                <% if(!currUser){%> 
                 <div class="booking">
                          <div class="price">
-                           <% if(currUser){ %> 
+                         
                              <h3> <b>Price: </b>&#8377;<%=list.price.toLocaleString("en-In")%> / per night </h3>
-                            <% } %>
+                         
                          </div>
                         <form action="/listings/<%=list._id%>/booking"  method="get" class="check-in">
                             <div class="check-in-out">
@@ -402,8 +414,36 @@
                         </form>
                 </div>
                 <% } %>
-                <% } %>
+                <% if(currUser  && !(list.owner._id.equals(currUser._id))){%> 
+                    <div class="booking">
+                             <div class="price">
+                             
+                                 <h3> <b>Price: </b>&#8377;<%=list.price.toLocaleString("en-In")%> / per night </h3>
+                             
+                             </div>
+                            <form action="/listings/<%=list._id%>/booking"  method="get" class="check-in">
+                                <div class="check-in-out">
+                                    <div>
+                                        <h5><b>check-in</b></h5>
+                                        <input type="date" name="booking[start]" role="menu">
+                                    </div>
+                                    <div>
+                                        <h5> <b>check-out</b></h5>
+                                        <input type="date" name="booking[end]" role="menu">
+                                    </div>
+                                </div>
+                                <div class="guest">
+                                    <h5><b>Number of guests</b></h5>
+                                    <input type="number" name="booking[guest]">
+                                </div>
+                                <button class="book-btn" type="submit">
+                                           Book this place
+                                </button>
+                            </form>
+                    </div>
+                    <% } %>
               </div>
+              <hr>
               <% if(currUser){ %>
     <div class="review">
         <p>Add Review And Rating</p>
@@ -440,6 +480,7 @@
         </form>
     </div>
     <% } %>
+    <hr>
     <%if(list.reviews.length!=0){%>
       <div class="see-review">
         <p class="review-title"><b>Customer's Review</b></p>
@@ -451,17 +492,17 @@
                     <p><%=review.comment%></p>
                    </div>
                     <p class="starability-result card-text" data-rating="<%=review.rating%>" ></p>
-                    <% if(currUser && list.owner._id.equals(currUser._id)){%>
+                 
                    <form action="/listings/<%=list._id%>/review/<%=review._id%>?_method=DELETE" method="POST" class="mb-3">
                           <button class="btn btn-md ">Delete</button>
                     </form>
-                    <% } %>
                 </div> 
              <%}%>
         </div>
        
         </div>
     <% } %>
+    <hr>
     <div class="location-map">
         <h3 >Where you will be</h3>
         <div id="map"></div>

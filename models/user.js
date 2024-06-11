@@ -12,7 +12,13 @@ const userSchema=new Schema({
           type:Schema.Types.ObjectId,
           ref:"Booking"
         }
-    ]
+    ],
+     customers:[
+        {
+              type:Schema.Types.ObjectId,
+              ref:"Booking"
+        }
+     ]
 });
 userSchema.plugin(passportLocalMongoose);
 module.exports=mongoose.model("User",userSchema);

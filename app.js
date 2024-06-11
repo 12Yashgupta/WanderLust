@@ -4,7 +4,7 @@ console.log(process.env.SECRET)
 }
 const Razorpay = require('razorpay'); 
 const { RAZORPAY_ID_KEY, RAZORPAY_SECRET_KEY } = process.env;
-
+const { v4: uuidv4 } = require('uuid');
 const express=require("express");//done
 const app=express();//done
 const mongoose=require("mongoose");//done
@@ -12,6 +12,7 @@ const port=8080;//done
 const MONGO_LINK="mongodb://127.0.0.1:27017/WanderLust";//done
 const Listing=require("./models/listing.js")
 let Booking=require("./models/booking.js")
+//let User=require("./models/user.js");
 const path=require("path");//done
 let ejsMate=require("ejs-mate");//done
 var methodOverride = require('method-override')
@@ -36,6 +37,7 @@ const User=require("./models/user.js");
 const { allowedNodeEnvironmentFlags } = require("process");
 let {logedIn,checkListAuthorization}=require("./middleware.js");
 const { number } = require('joi');
+const { uuid } = require('uuidv4');
 async function main(){
     await mongoose.connect(MONGO_LINK);
  }
@@ -108,75 +110,74 @@ app.get("/listings/:id/booking",logedIn,async(req,res,next)=>{
     try{
         let userid=req.user.id;
         let{id}=req.params;
-    //    console.log(id);
-        let hotelList=await Listing.findById(id);//listing id
+        
+        let hotelList=await Listing.findById(id).populate("owner");//listing id
         let hotelUser=await User.findById(userid);//user id
-        console.log(req.query);
+        let checkin=req.query.booking.start;
+        let checkout=req.query.booking.end;
+        let guest=req.query.booking.guest;
+        
+          let date1=new Date(checkin);
+          let date2=new Date(checkout); 
+         
+         let time_difference = date2.getTime() - date1.getTime();    
+         let days_difference = time_difference / (1000 * 60 * 60 * 24); 
+         if(time_difference<0 || days_difference<0){
+             req.flash("error","Please enter the valid date");
+             res.redirect(`/listings/${id}`)
+         }
+         console.log(hotelList);
+          let max_guest=hotelList.maxGuest;
+         if(guest<=0 || guest>(max_guest))
+             {
+                 req.flash("error",`Please enter the guest between 1 to ${hotelList.maxGuest}`);
+                 res.redirect(`/listings/${id}`)
+             }
+     
 
          let booking={
             start:req.query.booking.start,
             end:req.query.booking.end,
             guest:req.query.booking.guest,
             owner:userid,
-            place:id
+            place:id,
+            days:days_difference
          };
-         let newBook=new Booking(booking);
-         await newBook.save();
-         hotelList.bookings.push(newBook._id);
-         hotelUser.bookings.push(newBook._id);
-         await hotelList.save();
-         await hotelUser.save();
-         console.log(newBook);
-         console.log(hotelList);
-         console.log(hotelUser);
-        // hotelList.Booking.push(req.query.booking);
-        // hotelUser.Booking.push(req.query.booking);
-        // await hotelList.save();
-        // await hotelUser.save();
-        // console.log(hotelList);
-        // console.log(hotelUser);
       
-      //  console.log(hotelList);
-      //  console.log(req.user);
-       // console.log(req.query.booking)
-        console.log(hotelList);
-   let checkin=req.query.booking.start;
-   let checkout=req.query.booking.end;
-   let guest=req.query.booking.guest;
-   
-     let date1=new Date(checkin);
-     let date2=new Date(checkout); 
+          let newBook=new Booking(booking);
+         let book= await newBook.save();
+        
+         hotelUser.bookings.push(book._id);
+         await hotelUser.save();
+         hotelList.bookings.push(book._id);
+        let hotel =  await hotelList.save();
+       let OwnerList=await User.findById(hotelList.owner._id);
+       OwnerList.customers.push(book._id);
+       await OwnerList.save();
+   //    console.log(OwnerList);
     
-    let time_difference = date2.getTime() - date1.getTime();    
-    let days_difference = time_difference / (1000 * 60 * 60 * 24); 
-    if(days_difference<0){
-        req.flash("error","Please enter the valid date");
-        res.redirect(`/listings/${id}`)
-    }
-   
-    if(guest<=0 || guest>16)
-        {
-            req.flash("error","Please enter the guest between 1 to 16");
-            res.redirect(`/listings/${id}`)
-        }
-    let total_price=days_difference*guest;
-   //console.log(total_price);
-  
    var today =new Date();
    var dd = String(today.getDate());
-   var mm=String(today.getDay());
+   var mm=String(today.getMonth()+1);
    var yy=String(today.getFullYear());
-   var curr_date=dd+"/"+mm+"/"+yy;
+    var curr_date=dd+"/"+mm+"/"+yy;
    let list_name=hotelList.title;
    let list_price=hotelList.price;
-//   console.log(list_price);
-  res.send("Booked");
-  //  res.render("payment/product.ejs",{curr_date,days_difference,guest,list_name,list_price});
+  //console.log(list_price,days_difference,guest,list_name,list_price);
+   //res.send("Booked");
+  // console.log(curr_date," ",mm);
+   let invoice=uuidv4().substring(0,8);
+   //req.user.invoice=invoice;
+  // module.exports.invoice=invoice;
+//   res.send("Book") 
+  // console.log(hotel);
+   res.render("payment/product1.ejs",{curr_date,days_difference,guest,list_name,list_price,name:hotelUser.username,email:hotelUser.email,invoice});
 }
 catch(err){
        next(err);
 }
 });
+
 
 //Payment
 

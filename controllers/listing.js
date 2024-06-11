@@ -1,4 +1,6 @@
 let Listing=require("../models/listing.js");
+let User=require("../models/user.js");
+let Booking=require("../models/booking.js");
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 //const mbxClient = require('@mapbox/mapbox-sdk'); 
 const mapToken=process.env.MAP_TOKEN;
@@ -6,30 +8,30 @@ const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 const express=require("express");
 const app=express();
 const path=require("path");
+const { listingSchema } = require("../schema.js");
 app.use(express.json());
 app.use(express.static(path.join(__dirname,"/public")));
 module.exports.index = async (req, res) => {
     let allListings = await Listing.find();
-
+   // console.log(req.query)
     const {  minPrice, maxPrice, category } = req.query;
 
     let result = allListings;
-   // console.log(req.query);
-    // console.log(category);
+
 
     // If category parameter is provided, filter by category
     if (category && category.length > 0) {
         result = result.filter(listing => category.includes(listing.category));
-      //  console.log(result);
     }
-  
-   //If minPrice or maxPrice parameters are provided, filter by price range
+
+    // If minPrice or maxPrice parameters are provided, filter by price range
     if (minPrice || maxPrice) {
         const min = minPrice ? parseInt(minPrice) : Number.MIN_SAFE_INTEGER;
         const max = maxPrice ? parseInt(maxPrice) : Number.MAX_SAFE_INTEGER;
 
         result = result.filter(listing => listing.price >= min && listing.price <= max);
     }
+    //console.log(result);
 
     res.render('listings/index.ejs', { allListings: result });
 }
@@ -41,13 +43,15 @@ module.exports.renderNewForm=(req,res)=>{
  module.exports.showRoute=async (req,res)=>{
     let{id}=req.params;
     let list=await Listing.findById(id).populate({path:"reviews",populate:{path:"author"}}).populate("owner");
-    console.log(list);
+   // console.log(list);
     if(!list)
         {
             req.flash("error","Listing you requested ,does not exist");
             res.redirect("/listings");
         }
    //    console.log(list);
+    console.log("Show Route:-");
+    console.log(list);
     res.render("listings/show1.ejs",{list});
 }
 
@@ -105,9 +109,24 @@ module.exports.updateForm=async (req, res) => {
 };
 
 module.exports.deleteForm=async (req,res)=>{
-    let{id}=req.params;
-    let deletedListing=await Listing.findByIdAndDelete(id);
+   let list_id=req.params.id;
+    let listing=await Listing.findById(list_id).populate({path:"owner",populate:{path:"customers"}}).populate("bookings");
+  
+        for(book of listing.owner.customers)
+            {
+                let id=book._id;
+                let book_place=await Booking.findById(id);   
+                let ownerId=book_place.owner._id;
+                let owner=await User.findById(ownerId);
+                let placeId=book_place.place._id;
+                let place=await Listing.findById(placeId); 
+               let l= await Listing.findByIdAndUpdate(placeId,{$pull:{bookings:id}});
+               let u= await User.findByIdAndUpdate(ownerId,{$pull:{bookings:id}});
+               let b= await Booking.findByIdAndDelete(id);
+          }
+    let deletedListing=await Listing.findByIdAndDelete(list_id);
     console.log("Deleted listing",deletedListing);
     req.flash("success","Listing deleted!");
     res.redirect("/listings");
+  
  };

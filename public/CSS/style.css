@@ -7,12 +7,14 @@ body{
     min-height: 100vh;
     background-color: #e9f3f6 !important;
      z-index: 0;
-     border: 2px solid black;
+     /* border: 2px solid black; */
 }
 .container{
   flex: 1;
-  /* border: 2px solid black; */
-  z-index: 0;
+ padding: 1rem;
+ 
+  /* z-index: 0; */
+
 }
 
 /*
@@ -138,7 +140,7 @@ body{
     width: 80vh;
 }
 /* Date */
-input[type="date"]::-webkit-calendar-picker-indicator {
+/* input[type="date"]::-webkit-calendar-picker-indicator {
     background: transparent;
     bottom: 0;
     color: transparent;
@@ -149,7 +151,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     right: 0;
     top: 0;
     width: auto;
-}
+} */
 
 /* signup */
 .gradient-border {

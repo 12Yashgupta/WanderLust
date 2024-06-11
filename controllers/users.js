@@ -14,8 +14,7 @@ module.exports.signup=async(req,res,next)=>{
        req.flash("success","Welcome to WanderLust")
        res.redirect("/listings");
     })
-   req.flash("success","User registered successfully");
-   res.redirect("/signup");
+  
     }
     catch(err){
        req.flash("error",err.message);

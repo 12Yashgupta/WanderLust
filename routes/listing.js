@@ -54,5 +54,18 @@ router.get("/category/:option",async(req,res)=>{
 
 //Edit Route
 router.get("/:id/edit", logedIn, checkListAuthorization, asyncWrap(listingController.editForm));
-
+router.post("/:id/booking",async(req,res)=>{
+  //  console.log("_______________________________________")
+     let{id}=req.params;
+     let list=await Listing.findById(id).populate("owner");
+  //  console.log(list);
+     let owner_id=list.owner._id;
+     let owner_cust=await User.findById(owner_id).populate({path:"customers",populate:{path:"owner"}}).populate({path:"customers",populate:{path:"place"}});
+    
+  let all_customers=owner_cust.customers;
+  console.log(all_customers);
+ res.render("listings/customer.ejs",{all_customers,price:list.price,location:list.title});
+   // console.log("_____________________________________________________");
+//res.send("Book");
+});
  module.exports=router;

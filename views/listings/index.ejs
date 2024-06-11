@@ -4,6 +4,7 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
+      margin-bottom: 1rem;
      }
      .filter{
       text-align: center;
@@ -27,6 +28,7 @@
       display: flex;
       align-items: center;
      }
+     
      .form-check-input{
       cursor: pointer;
      }
@@ -52,61 +54,109 @@
       margin-right: 3rem;
       margin-left: 3rem;
      }
+     /* .filter:hover{
+      border-bottom: 1px solid black;
+     } */
+      .filter p:hover{
+        color:#0a5071;
+        border-bottom: 1px solid black;
+      }
+      .filter p:hover{
+        color: #0a5071;
+      }
+      /* .filter i:hover{
+        color: #0a5071;
+      } */
+     .options {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #eee;
+            border: 2px solid #0a5071;
+            border-radius: 3px;
+            position: relative;
+            cursor: pointer;
+            
+        }
+      .options:checked::after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 6px;
+            width: 6px;
+            height: 12px;
+            border: solid #0a5071;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            display: inline-block;
+        }
+
+        /* Add focus styles */
+       .options:focus {
+            outline: none;
+            box-shadow: 0 0 2px 2px #0a5071;
+          
+        } 
+        #flexSwitchCheckDefault{
+          display: inline-block;
+        }
 </style>
 <body>
     <div id="filters">
             <div class="filter">
-              <a href="/listings/category/Trending" style="text-decoration: none; color: black;">
+              <a href="/listings/category/Trending" style="text-decoration: none; color: black; font-weight: 700;">
               <div> <i class="fa-solid fa-fire"></i></div>
               <p>Trending</p>
               </a>
             </div>
             <div class="filter">
-              <a href="/listings/category/Rooms" style="text-decoration: none; ">
+              <a href="/listings/category/Rooms" style="text-decoration: none;color: black; font-weight: 700; ">
                 <div><i class="fa-solid fa-bed"></i></div>
                 <p>Rooms</p>
               </a>
            </div>
            <div class="filter">
-            <a href="/listings/category/Iconic_Cities" style="text-decoration: none; color: black;">
+            <a href="/listings/category/Iconic_Cities" style="text-decoration: none;color: black; font-weight: 700;">
             <div><i class="fa-solid fa-mountain-city"></i></div>
             <p>Iconic Cities</p>
             </a>
            </div>
          <div class="filter">
-          <a href="/listings/category/Mountains" style="text-decoration: none;">
+          <a href="/listings/category/Mountains" style="text-decoration: none; color: black; font-weight: 700;">
           <div><i class="fa-solid fa-mountain"></i></div>
           <p>Mountains</p>
           </a>
          </div>
        <div class="filter">
-        <a href="/listings/category/Campings" style="text-decoration: none; color: black;">
+        <a href="/listings/category/Campings" style="text-decoration: none; color: black; font-weight: 700;">
           <div><i class="fa-solid fa-campground"></i></div>
           <p>Campings</p>
         </a>
        </div>
        <div class="filter">
-        <a href="/listings/category/Farms" style="text-decoration: none;">
+        <a href="/listings/category/Farms" style="text-decoration: none; color: black; font-weight: 700;">
         <div><i class="fa-solid fa-cow"></i></div>
         <p>Farms</p>
         </a>
        </div>
 
             <div class="filter">
-              <a href="/listings/category/Castles" style="text-decoration: none;color: black;">
+              <a href="/listings/category/Castles" style="text-decoration: none;color: black; font-weight: 700;">
                <div><i class="fa-brands fa-fort-awesome"></i></div>
                <p>Castles</p>
               </a>
             </div>
 
             <div class="filter">
-              <a href="/listings/category/Artic" style="text-decoration: none;">
+              <a href="/listings/category/Artic" style="text-decoration: none;color: black; font-weight: 700;">
               <div><i class="fa-solid fa-snowflake"></i></div>
               <p>Arctic</p>
               </a>
            </div>
             <div class="filter">
-              <a href="/listings/category/Pools" style="text-decoration: none; color: black;">
+              <a href="/listings/category/Pools" style="text-decoration: none;color: black; font-weight: 700;">
               <div><i class="fa-solid fa-person-swimming"></i></div>
               <p>Amazing Pools</p>
               </a>
@@ -121,10 +171,11 @@
 
            <div class="tax-toggle ">
             <div class="form-check-reverse form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" style="border: 1px solid black;" >
               <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
             </div>
            </div>
+           
     </div>
 
 
@@ -157,7 +208,7 @@ data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" ari
                     <div class="row row-cols-lg-4 row-cols-md-4 row-cols-sm-4">
                         <label class="filter-image col text-dark" >
                           <div style="display: flex;">
-                            <input  type="checkbox" class="m-0 mb opt" name="category" value="Pools">
+                            <input  type="checkbox" class="m-0 mb opt options" name="category" value="Pools">
                             <div  style="font-size: 1.5rem;">
                             <i class="fa-solid fa-person-swimming"></i>
                             </div> 
@@ -166,7 +217,7 @@ data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" ari
                         </label>
                         <label class="filter-image col text-dark" >
                           <div style="display: flex;">
-                            <input  type="checkbox" class="m-0 mb opt" name="category" value="Trending">
+                            <input  type="checkbox" class="m-0 mb opt options" name="category" value="Trending">
                             <div  style="font-size: 1.5rem;">
                             <i class="fa-solid fa-fire"></i>
                             </div> 
@@ -175,7 +226,7 @@ data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" ari
                         </label>
                         <label class="filter-image col text-dark" >
                           <div style="display: flex;">
-                            <input  type="checkbox" class="m-0 mb opt" name="category" value="Iconic-city">
+                            <input  type="checkbox" class="m-0 mb opt options" name="category" value="Iconic-city">
                             <div  style="font-size: 1.5rem;">
                               <i class="fa-solid fa-mountain-city"></i>
                             </div> 
@@ -184,7 +235,7 @@ data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" ari
                         </label>
                         <label class="filter-image col text-dark" >
                           <div style="display: flex;">
-                            <input  type="checkbox" class="m-0 mb opt" name="category" value="Pools">
+                            <input  type="checkbox" class="m-0 mb opt options" name="category" value="Pools" >
                             <div  style="font-size: 1.5rem;">
                               <i class="fa-solid fa-bed"></i>
                             </div> 
@@ -193,7 +244,7 @@ data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" ari
                         </label>
                         <label class="filter-image col text-dark" >
                           <div style="display: flex;">
-                            <input type="checkbox" class="m-0 mb opt" name="category" value="Mountains">
+                            <input type="checkbox" class="m-0 mb opt options" name="category" value="Mountains">
                             <div  style="font-size: 1.5rem;;">
                               <i class="fa-solid fa-mountain"></i>
                             </div> 
@@ -202,7 +253,7 @@ data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" ari
                         </label>
                         <label class="filter-image col text-dark" >
                           <div style="display: flex;">
-                            <input  type="checkbox" class="m-0 mb opt" name="category" value="Campings">
+                            <input  type="checkbox" class="m-0 mb opt options" name="category" value="Campings">
                             <div  style="font-size: 1.5rem;">
                             <i class="fa-solid fa-campground"></i>
                             </div> 
@@ -211,7 +262,7 @@ data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" ari
                         </label>
                         <label class="filter-image col text-dark" >
                           <div style="display: flex;">
-                            <input  type="checkbox" class="m-0 mb opt" name="category" value="Farms">
+                            <input  type="checkbox" class="m-0 mb opt options" name="category" value="Farms">
                             <div  style="font-size: 1.5rem;">
                               <i class="fa-solid fa-cow"></i>
                             </div> 
@@ -220,7 +271,7 @@ data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" ari
                         </label>
                         <label class="filter-image col text-dark" >
                           <div style="display: flex;">
-                            <input  type="checkbox" class="m-0 mb opt" name="category" value="Castles">
+                            <input  type="checkbox" class="m-0 mb opt options" name="category" value="Castles">
                             <div  style="font-size: 1.5rem;">
                               <i class="fa-brands fa-fort-awesome"></i>
                             </div> 
@@ -229,7 +280,7 @@ data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" ari
                         </label>
                         <label class="filter-image col text-dark" >
                           <div style="display: flex;">
-                            <input type="checkbox" class="m-0 mb opt" name="category" value="Arctic">
+                            <input type="checkbox" id="arctic" class="m-0 mb opt options" name="category" value="Arctic">
                             <div  style="font-size: 1.5rem;;">
                               <i class="fa-solid fa-snowflake"></i>
                             </div> 
@@ -251,7 +302,7 @@ data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" ari
     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 ">
         <%  for(let list of allListings){  %>
             <!-- <a href="/listings/<%=list._id%>" class="listing-link"> -->
-                <div class="card col listing-card " >
+                <div class="card col listing-card " style=" margin-bottom: 1rem; margin-left: 0.5rem;" >
                     <img src="<%=list.image.url%>" class="card-img-top" alt="listing-image" style="height:20rem ">
                     <div class="card-img-overlay"></div>
                     <div class="card-body">
